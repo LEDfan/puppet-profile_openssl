@@ -1,6 +1,8 @@
 define profile_openssl::generate_key_and_csr  (
   $csr_path=undef,
-  $key_path=undef) {
+  $key_path=undef,
+  $common_name="localhost"
+  ) {
 
   $openssl_cnf = "${::puppet_vardir}/openssl/${name}.cnf"
 
@@ -10,7 +12,7 @@ define profile_openssl::generate_key_and_csr  (
     group => root,
   } ->
   exec { "openssl generate csr ${csr_path}":
-    command => "/usr/bin/openssl req -key ${key_path} -new -sha256 -out ${csr_path} -subj \"/C=DE/ST=BW/L=Stuttgart/O=Dummy Authority/CN=localhost\"",
+    command => "/usr/bin/openssl req -key ${key_path} -new -sha256 -out ${csr_path} -subj \"/C=DE/ST=BW/L=Stuttgart/O=Dummy Authority/CN=${common_name}\"",
     user => root,
     group => root,
   }
