@@ -8,11 +8,13 @@ define profile_openssl::generate_key_and_csr  (
 
   exec { "openssl generate key ${key_path}":
     command => "/usr/bin/openssl genrsa -out ${key_path} 2048 -key ${key_path}",
+    creates => $key_path,
     user => root,
     group => root,
   } ->
   exec { "openssl generate csr ${csr_path}":
     command => "/usr/bin/openssl req -key ${key_path} -new -sha256 -out ${csr_path} -subj \"/C=DE/ST=BW/L=Stuttgart/O=Dummy Authority/CN=${common_name}\"",
+    creates => $csr_path,
     user => root,
     group => root,
   }
